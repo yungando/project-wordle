@@ -1,40 +1,60 @@
 import React from 'react';
+import { checkGuess } from '../game-helpers';
 
 const GuessInput = ({
-  inputGuess, setInputGuess, guessArray, setGuessArray,
-}) => (
-  <form
-    className="guess-input-wrapper"
-    onSubmit={(event) => {
-      event.preventDefault();
-      const formInput = event.target[0];
+  dictionary, guessArray, setGuessArray, playState, setPlayState, answer,
+}) => {
+  const [inputGuess, setInputGuess] = React.useState('');
+  return (
+    <form
+      className="guess-input-wrapper"
+      onSubmit={(event) => {
+        event.preventDefault();
+        const formInput = event.target[0];
 
-      console.log({ inputGuess });
+        if (!dictionary.check(inputGuess)) {
+          formInput.setCustomValidity('not a real word mate');
+          formInput.reportValidity();
+          return;
+        }
 
-      if (formInput.value.length !== 5) {
-        formInput.setCustomValidity('Guess must be 5 characters long.');
-        formInput.reportValidity();
-        return;
-      }
-      formInput.setCustomValidity('');
+        console.log({ inputGuess });
 
-      const newGuessArray = guessArray.concat(inputGuess);
-      setGuessArray(newGuessArray);
-      setInputGuess('');
-    }}
-  >
-    <label htmlFor="guess-input">Enter guess:</label>
-    <input
-      id="guess-input"
-      type="text"
-      value={inputGuess}
-      required
-      onChange={(event) => {
-        setInputGuess(event.target.value.toUpperCase());
-        event.target.setCustomValidity('');
+        if (formInput.value.length !== 5) {
+          formInput.setCustomValidity('Guess must be 5 characters long.');
+          formInput.reportValidity();
+          return;
+        }
+
+        const newGuessArray = guessArray.concat(inputGuess);
+        setGuessArray(newGuessArray);
+
+        formInput.setCustomValidity('');
+        setInputGuess('');
+
+        const correctLettersInGuess = checkGuess(inputGuess, answer).filter((letter) => letter.status === 'correct').length;
+        if (correctLettersInGuess === 5) {
+          setPlayState('won');
+          return;
+        }
+
+        if (newGuessArray.length === 6) setPlayState('lost');
       }}
-    />
-  </form>
-);
+    >
+      <label htmlFor="guess-input">Enter guess:</label>
+      <input
+        id="guess-input"
+        type="text"
+        value={inputGuess}
+        required
+        onChange={(event) => {
+          setInputGuess(event.target.value.toUpperCase());
+          event.target.setCustomValidity('');
+        }}
+        disabled={playState !== 'playing'}
+      />
+    </form>
+  );
+};
 
 export default GuessInput;
