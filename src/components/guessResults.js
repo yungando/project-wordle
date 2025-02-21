@@ -15,7 +15,10 @@ const GuessResults = ({ answer, guessArray }) => {
   return (
     <div className='guess-results'>
       {guessDisplay.map((guess, index) => (
-        <Guess key={index} guess={guess.length ? checkGuess(guess, answer) : blankGuess} />
+        <Guess
+          key={index}
+          guess={guess.length ? checkGuess(guess, answer) : blankGuess}
+        />
       ))}
     </div>
   );
