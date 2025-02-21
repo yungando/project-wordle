@@ -41,8 +41,6 @@ button {
 }
 
 .wrapper {
-  display: flex;
-  flex-direction: column;
   min-height: 100%;
 }
 
@@ -78,7 +76,7 @@ h1 {
   flex-direction: column;
   gap: var(--game-spacing);
   padding: var(--game-spacing) 32px;
-  margin: 0 auto;
+  margin: auto;
   min-width: 250px;
   max-width: min(500px, 58vh, 100%);
 }
@@ -114,12 +112,15 @@ h1 {
 .guess:first-of-type .cell:first-of-type {
   --radius: 4px 0px 0px 0px;
 }
+
 .guess:first-of-type .cell:last-of-type {
   --radius: 0px 4px 0px 0px;
 }
+
 .guess:last-of-type .cell:last-of-type {
   --radius: 0px 0px 4px 0px;
 }
+
 .guess:last-of-type .cell:first-of-type {
   --radius: 0px 0px 0px 4px;
 }
@@ -129,11 +130,13 @@ h1 {
   border-color: var(--color-success);
   color: white;
 }
+
 .cell.incorrect {
   background: var(--color-gray-300);
   border-color: var(--color-gray-300);
   color: white;
 }
+
 .cell.misplaced {
   background: var(--color-warning);
   border-color: var(--color-warning);
@@ -162,24 +165,24 @@ h1 {
 }
 
 .banner {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  padding: 32px;
+  padding: 10px;
   text-align: center;
-  animation: slideUp 750ms cubic-bezier(0, 0.72, 0.24, 1.02);
-  border-radius: 4px 4px 0px 0px;
+  border-radius: 4px 4px 4px 4px;
   will-change: transform;
+}
+
+.banner p {
+  font-size: 2rem;
 }
 
 .happy.banner {
   background: var(--color-success);
   color: white;
 }
+
 .sad.banner {
   background: var(--color-error);
   color: white;
@@ -208,6 +211,7 @@ h1 {
   border-radius: 8px;
   padding: 24px 32px;
 }
+
 .modal-close-btn {
   position: absolute;
   top: 0;
@@ -215,6 +219,7 @@ h1 {
   padding: 16px;
   cursor: pointer;
 }
+
 .modal-title {
   margin-bottom: 0.5em;
 }
@@ -226,6 +231,7 @@ h1 {
   from {
     transform: translateY(100%);
   }
+
   to {
     transform: translateY(0%);
   }

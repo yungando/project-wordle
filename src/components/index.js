@@ -3,6 +3,7 @@ import Header from './header.js';
 import GuessInput from './guessInput.js';
 import Guess from './guess.js';
 import GuessResults from './guessResults.js';
+import GameOverBanner from './gameOverBanner.js';
 
 export {
   Game,
@@ -10,4 +11,5 @@ export {
   GuessInput,
   Guess,
   GuessResults,
+  GameOverBanner,
 };

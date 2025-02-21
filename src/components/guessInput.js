@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
+
 import { checkGuess } from '../game-helpers';
 
 const GuessInput = ({
-  dictionary, guessArray, setGuessArray, playState, setPlayState, answer,
+  dictionary,
+  guessArray,
+  setGuessArray,
+  playState,
+  setPlayState,
+  answer,
 }) => {
-  const [inputGuess, setInputGuess] = React.useState('');
+  const [inputGuess, setInputGuess] = useState('');
   return (
     <form
       className="guess-input-wrapper"
+      visibility={playState === 'playing' ? 'visible' : 'hidden'}
       onSubmit={(event) => {
         event.preventDefault();
         const formInput = event.target[0];
@@ -47,6 +54,7 @@ const GuessInput = ({
         type="text"
         value={inputGuess}
         required
+        autoComplete="off"
         onChange={(event) => {
           setInputGuess(event.target.value.toUpperCase());
           event.target.setCustomValidity('');

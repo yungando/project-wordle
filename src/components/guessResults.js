@@ -1,9 +1,10 @@
 import React from 'react';
 
-import Guess from './guess.js';
 import { range } from '../utils.js';
 import { NUM_OF_GUESSES_ALLOWED } from '../constants.js';
 import { checkGuess } from '../game-helpers.js';
+
+import Guess from './guess.js';
 
 const GuessResults = ({ answer, guessArray }) => {
   const blankGrid = range(NUM_OF_GUESSES_ALLOWED - guessArray.length).map(() => '');
@@ -14,9 +15,7 @@ const GuessResults = ({ answer, guessArray }) => {
   return (
     <div className='guess-results'>
       {guessDisplay.map((guess, index) => (
-        <div key={`guess-${index}}`}>
-          <Guess guess={guess.length ? checkGuess(guess, answer) : blankGuess} />
-        </div>
+        <Guess key={index} guess={guess.length ? checkGuess(guess, answer) : blankGuess} />
       ))}
     </div>
   );
