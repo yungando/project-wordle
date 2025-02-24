@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
+import Typo from 'typo-js';
 
-import { checkGuess } from '../game-helpers';
+const dictionary = new Typo('en_GB', false, false, { dictionaryPath: '.' });
 
-const handleFormSubmit = (
+const handleGuessSubmit = (
   event,
-  dictionary,
-  guessArray,
-  setGuessArray,
-  setPlayState,
-  answer,
+  handleNewGuess,
   inputGuess,
   setInputGuess,
 ) => {
@@ -21,27 +18,17 @@ const handleFormSubmit = (
     return;
   }
 
-  console.log({ inputGuess });
-
   if (formInput.value.length !== 5) {
-    formInput.setCustomValidity('Guess must be 5 characters long.');
+    formInput.setCustomValidity('Guesses must be 5 characters long.');
     formInput.reportValidity();
     return;
   }
 
-  const newGuessArray = guessArray.concat(inputGuess);
-  setGuessArray(newGuessArray);
+  handleNewGuess(inputGuess);
+  console.log({ inputGuess });
 
   formInput.setCustomValidity('');
   setInputGuess('');
-
-  const correctLettersInGuess = checkGuess(inputGuess, answer).filter((letter) => letter.status === 'correct').length;
-  if (correctLettersInGuess === 5) {
-    setPlayState('won');
-    return;
-  }
-
-  if (newGuessArray.length === 6) setPlayState('lost');
 };
 
 const handleInputChange = (inputField, setInputGuess) => {
@@ -50,20 +37,15 @@ const handleInputChange = (inputField, setInputGuess) => {
 };
 
 const GuessInput = ({
-  dictionary,
-  guessArray,
-  setGuessArray,
+  handleNewGuess,
   playState,
-  setPlayState,
-  answer,
 }) => {
   const [inputGuess, setInputGuess] = useState('');
   return (
     <form
       className="guess-input-wrapper"
       visibility={playState === 'playing' ? 'visible' : 'hidden'}
-      // eslint-disable-next-line max-len
-      onSubmit={(event) => handleFormSubmit(event, dictionary, guessArray, setGuessArray, setPlayState, answer, inputGuess, setInputGuess)}
+      onSubmit={(event) => handleGuessSubmit(event, handleNewGuess, inputGuess, setInputGuess)}
     >
       <label htmlFor="guess-input">Enter guess:</label>
       <input
@@ -71,6 +53,7 @@ const GuessInput = ({
         type="text"
         value={inputGuess}
         required
+        maxLength={5}
         autoComplete="off"
         onChange={({ target: inputField }) => handleInputChange(inputField, setInputGuess)}
         disabled={playState !== 'playing'}

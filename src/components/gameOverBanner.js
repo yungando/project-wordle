@@ -1,23 +1,18 @@
 import React from 'react';
 
-const handleBannerClick = (setGuessArray, setPlayState, setNewAnswer, getNewAnswer) => {
-  setGuessArray([]);
-  setPlayState('playing');
-  const newAnswer = getNewAnswer();
-  console.log({ newAnswer });
-  setNewAnswer(getNewAnswer);
-};
-
 const GameOverBanner = ({
-  playState, setGuessArray, setPlayState, setNewAnswer, getNewAnswer,
+  playState,
+  numOfGuesses,
+  answer,
+  resetGame,
 }) => (
   <div
     className={`${playState === 'won' ? 'happy' : 'sad'} banner`}
-    onClick={() => handleBannerClick(setGuessArray, setPlayState, setNewAnswer, getNewAnswer)}
+    onClick={() => resetGame()}
     style={{ cursor: 'pointer' }}
   >
     <p>
-      {`${playState === 'won' ? 'nice one' : 'fucked it'}`}
+      {`${playState === 'won' ? `nice one, got it in ${numOfGuesses}` : `fucked it, it was ${answer}`}`}
     </p>
     <p>play again ?????</p>
   </div>

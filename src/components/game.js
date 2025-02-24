@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import Typo from 'typo-js';
 
 import { sample } from '../utils.js';
 import { WORDS } from '../data.js';
-
 // eslint-disable-next-line n/no-missing-import
 import { GuessInput, GuessResults, GameOverBanner } from './';
+import { NUM_OF_GUESSES_ALLOWED } from '../constants.js';
 
-const dictionary = new Typo('en_GB', false, false, { dictionaryPath: '.' });
 const getNewAnswer = () => sample(WORDS);
 
 const Game = () => {
@@ -19,6 +17,25 @@ const Game = () => {
   const [guessArray, setGuessArray] = useState([]);
   const [playState, setPlayState] = useState('playing');
 
+  const handleNewGuess = (inputGuess) => {
+    const newGuessArray = guessArray.concat(inputGuess);
+    setGuessArray(newGuessArray);
+    if (inputGuess === answer) {
+      setPlayState('won');
+      return;
+    }
+    if (newGuessArray.length === NUM_OF_GUESSES_ALLOWED) setPlayState('lost');
+  };
+
+  const resetGame = () => {
+    setGuessArray([]);
+    setPlayState('playing');
+
+    const newAnswer = getNewAnswer();
+    console.log({ newAnswer });
+    setNewAnswer(newAnswer);
+  };
+
   return (
     <>
       <GuessResults
@@ -29,20 +46,15 @@ const Game = () => {
         playState === 'playing'
           ? (
             <GuessInput
-              dictionary={dictionary}
-              guessArray={guessArray}
-              setGuessArray={setGuessArray}
+              handleNewGuess={handleNewGuess}
               playState={playState}
-              setPlayState={setPlayState}
-              answer={answer}
             />
           ) : (
             <GameOverBanner
               playState={playState}
-              setGuessArray={setGuessArray}
-              setPlayState={setPlayState}
-              setNewAnswer={setNewAnswer}
-              getNewAnswer={getNewAnswer}
+              numOfGuesses={guessArray.length}
+              answer={answer}
+              resetGame={resetGame}
             />
           )
       }
