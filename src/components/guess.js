@@ -1,14 +1,16 @@
 import React from 'react';
 
-const Guess = ({ guess }) => (
-  <p className='guess' key={`guess-${guess.join('')}`}>
-    {guess.map(({ letter, status }) => (
-      // eslint-disable-next-line n/no-unsupported-features/node-builtins
-      <span className={`cell ${status}`} key={crypto.randomUUID()} >
-        {letter}
-      </span>
-    ))}
-  </p>
-);
+const Guess = ({ guess }) => {
+  const cellId = React.useId();
+  return (
+    <p className='guess' key={`guess-${guess.join('')}`}>
+      {guess.map(({ letter, status }, index) => (
+        <span className={`cell ${status}`} key={`${index}${cellId}cell`} >
+          {letter}
+        </span>
+      ))}
+    </p>
+  );
+};
 
 export default Guess;

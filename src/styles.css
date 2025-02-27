@@ -188,6 +188,25 @@ h1 {
   color: white;
 }
 
+.input-error {
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity));
+  padding-left: .5rem;
+  padding-right: .5rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 226 226 / var(--tw-bg-opacity));
+  border-radius: .375rem;
+  gap: .25rem;
+  align-items: center;
+  display: flex
+}
+
+.label-line {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
 .visually-hidden {
   position: absolute;
   overflow: hidden;

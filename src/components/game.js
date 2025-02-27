@@ -46,7 +46,7 @@ const Game = () => {
         playState === 'playing'
           ? (
             <GuessInput
-              handleNewGuess={handleNewGuess}
+              onNewGuess={handleNewGuess}
               playState={playState}
             />
           ) : (

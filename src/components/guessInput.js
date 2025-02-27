@@ -5,57 +5,74 @@ const dictionary = new Typo('en_GB', false, false, { dictionaryPath: '.' });
 
 const handleGuessSubmit = (
   event,
-  handleNewGuess,
+  onNewGuess,
   inputGuess,
   setInputGuess,
+  setValidityMessage,
 ) => {
   event.preventDefault();
   const [formInput] = event.target;
 
-  if (!dictionary.check(inputGuess)) {
-    formInput.setCustomValidity('not a real word mate');
-    formInput.reportValidity();
+  if (!formInput.value.length) {
+    setValidityMessage('required');
     return;
   }
 
   if (formInput.value.length !== 5) {
-    formInput.setCustomValidity('Guesses must be 5 characters long.');
-    formInput.reportValidity();
+    setValidityMessage('not long enough');
     return;
   }
 
-  handleNewGuess(inputGuess);
+  if (!dictionary.check(inputGuess)) {
+    setValidityMessage('not a real word mate');
+    return;
+  }
+
+  onNewGuess(inputGuess);
   console.log({ inputGuess });
 
-  formInput.setCustomValidity('');
+  setValidityMessage('');
   setInputGuess('');
 };
 
-const handleInputChange = (inputField, setInputGuess) => {
+const handleInputChange = (inputField, setInputGuess, setValidityMessage) => {
   setInputGuess(inputField.value.toUpperCase());
-  inputField.setCustomValidity('');
+  setValidityMessage('');
 };
 
 const GuessInput = ({
-  handleNewGuess,
+  onNewGuess,
   playState,
 }) => {
   const [inputGuess, setInputGuess] = useState('');
+  const [validityMessage, setValidityMessage] = useState('');
+
   return (
     <form
       className="guess-input-wrapper"
       visibility={playState === 'playing' ? 'visible' : 'hidden'}
-      onSubmit={(event) => handleGuessSubmit(event, handleNewGuess, inputGuess, setInputGuess)}
+      onSubmit={(event) => {
+        handleGuessSubmit(event, onNewGuess, inputGuess, setInputGuess, setValidityMessage);
+      }}
     >
-      <label htmlFor="guess-input">Enter guess:</label>
+      <div className="label-line">
+        <label htmlFor="guess-input">Enter guess:</label>
+        {validityMessage.length > 0 && (
+          <p className="input-error">
+            {validityMessage}
+          </p>
+        )}
+      </div>
       <input
         id="guess-input"
         type="text"
         value={inputGuess}
-        required
+        noValidate
         maxLength={5}
         autoComplete="off"
-        onChange={({ target: inputField }) => handleInputChange(inputField, setInputGuess)}
+        onChange={({ target: inputField }) => {
+          handleInputChange(inputField, setInputGuess, setValidityMessage);
+        }}
         disabled={playState !== 'playing'}
       />
     </form>
