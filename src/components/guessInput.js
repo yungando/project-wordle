@@ -10,7 +10,7 @@ const handleGuessSubmit = (
   setInputGuess,
 ) => {
   event.preventDefault();
-  const formInput = event.target[0];
+  const [formInput] = event.target;
 
   if (!dictionary.check(inputGuess)) {
     formInput.setCustomValidity('not a real word mate');
